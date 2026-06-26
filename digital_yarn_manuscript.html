@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Yarn Manuscript | Dark Vintage Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #2C1E16; /* Dark Vintage Brown */
+            color: #D1BFA5; /* Light Brown/Parchment */
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        #hero-canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center bg-[#2C1E16]/80 backdrop-blur-md border-b border-[#D1BFA5]/20">
+        <div class="text-2xl font-bold tracking-tighter">DYM<span class="text-[#D1BFA5]">.</span></div>
+        <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest text-[#D1BFA5]">
+            <a href="#" class="hover:text-white transition">Patterns</a>
+            <a href="#" class="hover:text-white transition">Resources</a>
+            <a href="#" class="hover:text-white transition">About</a>
+        </div>
+        <button class="border border-[#D1BFA5] text-[#D1BFA5] px-6 py-2 rounded-full text-sm hover:bg-[#D1BFA5] hover:text-[#2C1E16] transition">Shop Now</button>
+    </nav>
+
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div id="hero-canvas"></div>
+        <div class="relative z-10 text-center px-4 max-w-3xl">
+            <h1 class="text-6xl md:text-8xl mb-6 text-[#D1BFA5]">Digital Yarn Manuscript</h1>
+            <p class="text-lg md:text-xl mb-10 text-[#D1BFA5]/70 font-light leading-relaxed">
+                Modern, premium crochet patterns designed for the contemporary maker. Clear, professional, and built for your creative journey.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button class="bg-[#D1BFA5] text-[#2C1E16] px-10 py-4 rounded-full hover:bg-white transition text-lg font-medium">Browse Collections</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-24 px-6 md:px-20 bg-[#2C1E16]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl mb-12 text-center text-[#D1BFA5]">Featured Collections</h2>
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Pattern Card 1 -->
+                <div class="group cursor-pointer">
+                    <div class="h-96 bg-[#3D2D24] rounded-2xl mb-6 overflow-hidden relative border border-[#D1BFA5]/10">
+                        <img src="https://i.pinimg.com/736x/e8/53/7f/e8537f7ff8118f42665018f46b3485ab.jpg" alt="Patchwork Cardigan" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
+                    </div>
+                    <h3 class="text-2xl mb-2 text-[#D1BFA5]">The Patchwork Cardi</h3>
+                    <p class="text-[#D1BFA5]/50 uppercase tracking-widest text-xs font-semibold">Intermediate • Garment</p>
+                </div>
+                <!-- Pattern Card 2 -->
+                <div class="group cursor-pointer">
+                    <div class="h-96 bg-[#3D2D24] rounded-2xl mb-6 overflow-hidden relative border border-[#D1BFA5]/10">
+                        <img src="https://i.pinimg.com/1200x/a4/13/6a/a4136a9a5865882d09ac37b5278a7611.jpg" alt="Fringed Poncho" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
+                    </div>
+                    <h3 class="text-2xl mb-2 text-[#D1BFA5]">Midnight Fringed Shawl</h3>
+                    <p class="text-[#D1BFA5]/50 uppercase tracking-widest text-xs font-semibold">Beginner • Accessory</p>
+                </div>
+                <!-- Pattern Card 3 -->
+                <div class="group cursor-pointer">
+                    <div class="h-96 bg-[#3D2D24] rounded-2xl mb-6 overflow-hidden relative border border-[#D1BFA5]/10">
+                        <img src="https://i.pinimg.com/1200x/fb/14/04/fb140434846adec79fc627b707658a07.jpg" alt="Chunky Blanket" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
+                    </div>
+                    <h3 class="text-2xl mb-2 text-[#D1BFA5]">Urban Texture Throw</h3>
+                    <p class="text-[#D1BFA5]/50 uppercase tracking-widest text-xs font-semibold">Advanced • Home Decor</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        window.onload = function() {
+            const container = document.getElementById('hero-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.PlaneGeometry(50, 50, 64, 64);
+            const colors = [];
+            const colorTop = new THREE.Color(0x7D6550); // Medium Brown (Top)
+            const colorBottom = new THREE.Color(0x2C1E16); // Dark Brown (Bottom)
+            
+            // Apply gradient logic to the mesh vertices
+            for (let i = 0; i < geometry.attributes.position.count; i++) {
+                const y = geometry.attributes.position.getY(i);
+                // Create the two-tone gradient effect
+                if (y > 0) colors.push(colorTop.r, colorTop.g, colorTop.b);
+                else colors.push(colorBottom.r, colorBottom.g, colorBottom.b);
+            }
+            geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
+
+            const material = new THREE.MeshBasicMaterial({ 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.25,
+                vertexColors: true 
+            });
+            const plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = -Math.PI / 2.5;
+            plane.position.y = -5;
+            scene.add(plane);
+
+            camera.position.z = 25;
+            camera.position.y = 8;
+
+            let time = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.01;
+                const positions = plane.geometry.attributes.position.array;
+                for (let i = 0; i < positions.length; i += 3) {
+                    const x = positions[i];
+                    const z = positions[i + 2];
+                    positions[i + 1] = Math.sin(x * 0.2 + time) * Math.cos(z * 0.2 + time) * 1.5;
+                }
+                plane.geometry.attributes.position.needsUpdate = true;
+                renderer.render(scene, camera);
+            }
+
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            });
+
+            animate();
+        }
+    </script>
+</body>
+</html>
